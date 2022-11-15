@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      body {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+      }
+      .card {
+        background-color: lightblue;
+        text-align: center;
+        border-radius: 10px;
+        width: 20rem;
+        height: 15rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0.5rem;
+        gap: 1rem;
+      }
+      .button{
+        height: 50px;
+        
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Click & Get<br></h1>
+    <h3>Random Quote</h3> 
+    <script>
+      let quoteCard = document.createElement("div");
+      quoteCard.setAttribute("class", "card");
+      let quote = document.createElement("p");
+      let authorName = document.createElement("h3");
+      let randomQuoteButton = document.createElement("button");
+      randomQuoteButton.innerHTML = "Random Quote";
+      randomQuoteButton.setAttribute('class','button')
+
+      function createCard(theQuote, author) {
+        quote.innerHTML = theQuote;
+        authorName.innerHTML = author;
+        quoteCard.appendChild(quote);
+        quoteCard.appendChild(authorName);
+        document.body.append(quoteCard);
+      }
+
+      function getRandomQuote() {
+        let baseURI = "https://programming-quotes-api.herokuapp.com/";
+        let getQuote = new XMLHttpRequest();
+        getQuote.open("GET", baseURI + "Quotes/random");
+        getQuote.onload = () => {
+          let randomQuote = JSON.parse(getQuote.responseText);
+          //console.log(randomQuote);
+
+          createCard(randomQuote.en, randomQuote.author);
+          document.body.append(randomQuoteButton);
+        };
+        getQuote.send();
+      }
+
+      window.onload =getRandomQuote();
+      randomQuoteButton.addEventListener("click", () => {
+        getRandomQuote();
+      });
+    </script>
+  </body>
+</html>
